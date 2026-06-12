@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>У меня есть к тебе вопрос... 👉👈</title>
+    
+    <!-- Подключаем стильные современные шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Подключаем Tailwind CSS для качественной верстки -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #f7a072 100%);
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Элемент стеклянного размытия (Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* Анимация пульсации кнопки ДА */
+        @keyframes customPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .pulse-button {
+            animation: customPulse 1.8s infinite ease-in-out;
+        }
+
+        /* Фоновые летающие сердечки */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.18);
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp 10s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) rotate(0deg) scale(0.6);
+                opacity: 0;
+            }
+            15% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(-10vh) rotate(360deg) scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* Эффект вылетающих праздничных сердец */
+        .pop-heart {
+            position: absolute;
+            pointer-events: none;
+            z-index: 50;
+            animation: explode 1.4s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(var(--rot)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="relative flex items-center justify-center p-4 min-h-screen">
+
+    <div id="bgHeartsContainer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"></div>
+
+    <div id="questionCard" class="glass-card relative z-10 max-w-md w-full rounded-3xl p-8 text-center shadow-2xl transition-all duration-500 ease-out transform hover:scale-[1.01]">
+        <div class="text-6xl mb-4 animate-bounce">👉👈</div>
+        
+        <h1 class="font-['Caveat'] text-5xl md:text-6xl text-[#ff4d6d] font-bold mb-4">
+            Привет, Рахатым! ✨
+        </h1>
+        
+        <p class="text-gray-700 text-lg md:text-xl font-semibold mb-10 leading-relaxed">
+            У меня есть к тебе один очень важный вопрос...<br>
+            <span class="text-2xl text-[#ff335c] font-extrabold mt-2 block">Станешь моей девушкой? 💖</span>
+        </p>
+        
+        <!-- Контейнер для кнопок принятия решения -->
+        <div class="relative flex flex-row justify-center items-center gap-6 h-20">
+            <!-- Кнопка ДА -->
+            <button id="yesBtn" onclick="onAccept()" 
+                class="pulse-button px-8 py-4 bg-gradient-to-r from-[#ff4d6d] to-[#ff758f] text-white text-xl font-extrabold rounded-full shadow-lg shadow-[#ff4d6d]/40 hover:shadow-xl hover:shadow-[#ff4d6d]/60 transition-all duration-300 transform active:scale-95 z-20">
+                Да! 🥰
+            </button>
+            
+            <!-- Кнопка НЕТ (убегает) -->
+            <button id="noBtn" onmouseover="dodgeButton()" onclick="dodgeButton()"
+                class="absolute px-8 py-4 bg-white text-gray-600 border border-gray-200 text-xl font-bold rounded-full shadow-md transition-all duration-150 ease-out z-30">
+                Нет 😢
+            </button>
+        </div>
+    </div>
+
+    <div id="successCard" class="hidden glass-card relative z-10 max-w-md w-full rounded-3xl p-8 text-center shadow-2xl transition-all duration-700 ease-out transform scale-90 opacity-0">
+        <h1 class="font-['Caveat'] text-6xl text-[#ff4d6d] font-bold mb-4 animate-pulse">
+            Ура-а-а-а! 🎉
+        </h1>
+        
+        <!-- Анимированное изображение крутого котика с помощью векторной графики -->
+        <div class="flex justify-center my-6">
+            <svg class="w-48 h-48 drop-shadow-lg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Тело кота -->
+                <ellipse cx="100" cy="130" rx="60" ry="50" fill="#E2E8F0" />
+                <!-- Уши -->
+                <polygon points="50,90 40,40 80,75" fill="#CBD5E1" stroke="#94A3B8" stroke-width="3" stroke-linejoin="round"/>
+                <polygon points="150,90 160,40 120,75" fill="#CBD5E1" stroke="#94A3B8" stroke-width="3" stroke-linejoin="round"/>
+                <!-- Внутренняя розовая часть ушей -->
+                <polygon points="52,82 46,49 74,72" fill="#FFA0B4" />
+                <polygon points="148,82 154,49 126,72" fill="#FFA0B4" />
+                <!-- Голова кота -->
+                <circle cx="100" cy="100" r="55" fill="#F1F5F9" stroke="#94A3B8" stroke-width="4"/>
+                <!-- Мордочка и нос -->
+                <polygon points="100,105 95,99 105,99" fill="#FF8DA1"/>
+                <path d="M95,112 C97,116 100,116 100,112 C100,116 103,116 105,112" stroke="#475569" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <!-- Розовые щечки -->
+                <circle cx="65" cy="110" r="10" fill="#FFC2D1" />
+                <circle cx="135" cy="110" r="10" fill="#FFC2D1" />
+                <!-- Солнцезащитные очки крутого кота -->
+                <path d="M50,95 L150,95" stroke="#1E293B" stroke-width="6" stroke-linecap="round"/>
+                <!-- Стекла очков -->
+                <rect x="52" y="90" width="38" height="24" rx="12" fill="#0F172A"/>
+                <rect x="110" y="90" width="38" height="24" rx="12" fill="#0F172A"/>
+                <!-- Блики на очках -->
+                <path d="M58,95 L68,95" stroke="white" stroke-width="3" stroke-linecap="round" />
+                <path d="M116,95 L126,95" stroke="white" stroke-width="3" stroke-linecap="round" />
+                <!-- Лапки -->
+                <ellipse cx="70" cy="170" rx="15" ry="12" fill="#E2E8F0" stroke="#94A3B8" stroke-width="3"/>
+                <ellipse cx="130" cy="170" rx="15" ry="12" fill="#E2E8F0" stroke="#94A3B8" stroke-width="3"/>
+                <!-- Хвост -->
+                <path d="M150,150 C180,150 190,110 180,90" stroke="#CBD5E1" stroke-width="12" stroke-linecap="round" fill="none"/>
+            </svg>
+        </div>
+        
+        <!-- Детали вашей будущей встречи -->
+        <p class="text-gray-700 text-lg font-medium leading-relaxed mb-6">
+            <strong>Я безумно рад! Наконец-то 🥰</strong><br>
+            <span class="block mt-4 text-[#ff4d6d] font-bold text-xl">С меня шикарное свидание:</span>
+        </p>
+        
+        <div class="bg-white/50 border border-pink-100 rounded-2xl p-4 text-left inline-block w-full text-gray-700 space-y-2 mb-2 shadow-inner">
+            <p>📍 <strong>Место:</strong> Уютное кафе, вкусняшки и романтическая прогулка</p>
+            <p>📅 <strong>Время:</strong> Напишу тебе в личку прямо сейчас! 😉</p>
+            <p>🎁 <strong>Бонус:</strong> Море обнимашек и отличное настроение гарантировано!</p>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация фоновых романтических сердец
+        function initBackgroundHearts() {
+            const container = document.getElementById('bgHeartsContainer');
+            const icons = ['❤️', '💖', '💕', '💗', '🌸', '✨'];
+            const maxHearts = 15;
+
+            for (let i = 0; i < maxHearts; i++) {
+                createSingleBgHeart(container, icons);
+            }
+        }
+
+        function createSingleBgHeart(container, icons) {
+            const heart = document.createElement('div');
+            heart.className = 'bg-heart text-2xl';
+            heart.innerText = icons[Math.floor(Math.random() * icons.length)];
+            
+            // Настройка случайной начальной позиции и задержки анимации
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDelay = Math.random() * 8 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            
+            container.appendChild(heart);
+            
+            // Пересоздаем сердце после окончания анимации
+            heart.addEventListener('animationiteration', () => {
+                heart.style.left = Math.random() * 100 + 'vw';
+            });
+        }
+
+        // Запуск фоновых анимаций при старте
+        window.onload = function() {
+            initBackgroundHearts();
+        };
+
+        function dodgeButton() {
+            const noBtn = document.getElementById('noBtn');
+            const card = document.getElementById('questionCard');
+            const cardRect = card.getBoundingClientRect();
+
+            const padding = 30;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            // Вычисляем свободные границы экрана
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+
+            let randomX, randomY;
+            let safetyCounter = 0;
+
+            // Находим новые координаты, чтобы они гарантированно не перекрывали основную карточку
+            do {
+                randomX = Math.random() * maxX;
+                randomY = Math.random() * maxY;
+                safetyCounter++;
+            } while (
+                safetyCounter < 100 &&
+                randomX > cardRect.left - padding &&
+                randomX < cardRect.right + padding &&
+                randomY > cardRect.top - padding &&
+                randomY < cardRect.bottom + padding
+            );
+
+            // Мгновенно позиционируем кнопку на новые безопасные координаты
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.margin = '0';
+        }
+
+        function onAccept() {
+            const qCard = document.getElementById('questionCard');
+            const sCard = document.getElementById('successCard');
+
+            // Анимация плавного скрытия первой карточки
+            qCard.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => {
+                qCard.classList.add('hidden');
+                
+                // Отображение экрана триумфа
+                sCard.classList.remove('hidden');
+                // Даем браузеру время обработать удаление hidden для плавной анимации
+                setTimeout(() => {
+                    sCard.classList.remove('scale-90', 'opacity-0');
+                    sCard.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            }, 400);
+
+            // Роскошный фейерверк праздничных сердец
+            triggerHeartsExplosion();
+        }
+
+        function triggerHeartsExplosion() {
+            const heartIcons = ['💖', '❤️', '💕', '💗', '💘', '✨', '😻', '🌸'];
+            const explosionSize = 70;
+
+            for (let i = 0; i < explosionSize; i++) {
+                const pHeart = document.createElement('div');
+                pHeart.className = 'pop-heart';
+                pHeart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+
+                // Точка вылета — центр экрана
+                pHeart.style.left = '50%';
+                pHeart.style.top = '50%';
+
+                // Генерация векторов взрыва
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * window.innerWidth * 0.4 + 100;
+                
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                const rotation = Math.random() * 360 + 180;
+
+                pHeart.style.setProperty('--tx', `${tx}px`);
+                pHeart.style.setProperty('--ty', `${ty}px`);
+                pHeart.style.setProperty('--rot', `${rotation}deg`);
+
+                // Разнообразные размеры
+                pHeart.style.fontSize = (Math.random() * 24 + 18) + 'px';
+
+                document.body.appendChild(pHeart);
+
+                // Чистим DOM после завершения анимации
+                setTimeout(() => {
+                    pHeart.remove();
+                }, 1400);
+            }
+        }
+    </script>
+</body>
+</html>
