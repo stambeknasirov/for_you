@@ -1,301 +1,358 @@
+Сайт-приглашение:Станешь моей девушкой?:index.html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>У меня есть к тебе вопрос... 👉👈</title>
-    
-    <!-- Подключаем стильные современные шрифты -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <!-- Подключаем Tailwind CSS для качественной верстки -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <title>У меня есть к тебе вопрос... 💖</title>
+    <!-- Подключаем библиотеку для красивого взрыва сердечек-конфетти -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --secondary-color: #ff758f;
+            --accent-color: #ffb3c1;
+            --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #f7a072 100%);
-            height: 100vh;
+            font-family: 'Montserrat', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             overflow: hidden;
-            user-select: none;
-            -webkit-user-select: none;
+            perspective: 1000px;
         }
 
-        /* Элемент стеклянного размытия (Glassmorphism) */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid rgba(255, 255, 255, 0.6);
+        /* Задний фон с медленно летающими сердечками */
+        .background-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        /* Анимация пульсации кнопки ДА */
-        @keyframes customPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-        .pulse-button {
-            animation: customPulse 1.8s infinite ease-in-out;
-        }
-
-        /* Фоновые летающие сердечки */
         .bg-heart {
             position: absolute;
-            color: rgba(255, 77, 109, 0.18);
-            pointer-events: none;
-            z-index: 1;
-            animation: floatUp 10s linear infinite;
+            color: rgba(255, 77, 109, 0.15);
+            font-size: 24px;
+            animation: floatUp 8s linear infinite;
+            bottom: -50px;
         }
 
         @keyframes floatUp {
             0% {
-                transform: translateY(110vh) rotate(0deg) scale(0.6);
+                transform: translateY(0) rotate(0deg);
                 opacity: 0;
             }
-            15% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% {
-                transform: translateY(-10vh) rotate(360deg) scale(1.4);
-                opacity: 0;
+            10% {
+                opacity: 1;
             }
-        }
-
-        /* Эффект вылетающих праздничных сердец */
-        .pop-heart {
-            position: absolute;
-            pointer-events: none;
-            z-index: 50;
-            animation: explode 1.4s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-        }
-
-        @keyframes explode {
-            0% {
-                transform: translate(-50%, -50%) scale(1);
+            90% {
                 opacity: 1;
             }
             100% {
-                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(var(--rot)) scale(0);
+                transform: translateY(-105vh) rotate(360deg);
                 opacity: 0;
             }
         }
+
+        /* Основная карточка */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            z-index: 10;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(1);
+            position: relative;
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 45px rgba(255, 77, 109, 0.25);
+        }
+
+        /* Декор в виде сердца над вопросом */
+        .main-heart-icon {
+            font-size: 60px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            animation: pulse 1.5s ease infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            color: #2b2d42;
+            font-size: 26px;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        p.subtitle {
+            color: #5c677d;
+            font-size: 16px;
+            margin-bottom: 35px;
+        }
+
+        /* Контейнер для кнопок */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            min-height: 60px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Кнопка ДА */
+        #yesBtn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            z-index: 11;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+        }
+
+        #yesBtn:active {
+            transform: scale(0.95);
+        }
+
+        /* Кнопка НЕТ с плавным перетеканием позиции */
+        #noBtn {
+            background-color: #f0f2f5;
+            color: #5c677d;
+            border: 1px solid #e1e4e8;
+            /* Плавный переход для движения кнопки */
+            transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.2s ease;
+            position: relative;
+            z-index: 12;
+        }
+
+        #noBtn:active {
+            transform: scale(0.95);
+        }
+
+        /* Экран успеха */
+        .hidden {
+            display: none !important;
+            opacity: 0;
+            transform: scale(0.8) rotate(-5deg);
+        }
+
+        .success-screen {
+            animation: showSuccess 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes showSuccess {
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .success-gif-container {
+            width: 100%;
+            max-width: 220px;
+            margin: 0 auto 25px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            background: white;
+        }
+
+        .success-gif {
+            width: 100%;
+            display: block;
+        }
+
+        .success-title {
+            color: var(--primary-color);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .success-text {
+            color: #2b2d42;
+            font-size: 18px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .success-subtext {
+            color: #ff758f;
+            font-size: 14px;
+            margin-top: 15px;
+            font-style: italic;
+        }
     </style>
 </head>
-<body class="relative flex items-center justify-center p-4 min-h-screen">
+<body>
 
-    <div id="bgHeartsContainer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"></div>
+    <!-- Задний фон с порхающими сердечками -->
+    <div class="background-hearts" id="bgHearts"></div>
 
-    <div id="questionCard" class="glass-card relative z-10 max-w-md w-full rounded-3xl p-8 text-center shadow-2xl transition-all duration-500 ease-out transform hover:scale-[1.01]">
-        <div class="text-6xl mb-4 animate-bounce">👉👈</div>
+    <!-- ГЛАВНАЯ КАРТОЧКА С ВОПРОСОМ -->
+    <div class="card" id="quizCard">
+        <span class="main-heart-icon">💖</span>
+        <h1>Станешь моей девушкой?</h1>
+        <p class="subtitle">У тебя есть ровно два варианта ответа 😊</p>
         
-        <h1 class="font-['Caveat'] text-5xl md:text-6xl text-[#ff4d6d] font-bold mb-4">
-            Привет, Рахатым! ✨
-        </h1>
-        
-        <p class="text-gray-700 text-lg md:text-xl font-semibold mb-10 leading-relaxed">
-            У меня есть к тебе один очень важный вопрос...<br>
-            <span class="text-2xl text-[#ff335c] font-extrabold mt-2 block">Станешь моей девушкой? 💖</span>
-        </p>
-        
-        <!-- Контейнер для кнопок принятия решения -->
-        <div class="relative flex flex-row justify-center items-center gap-6 h-20">
-            <!-- Кнопка ДА -->
-            <button id="yesBtn" onclick="onAccept()" 
-                class="pulse-button px-8 py-4 bg-gradient-to-r from-[#ff4d6d] to-[#ff758f] text-white text-xl font-extrabold rounded-full shadow-lg shadow-[#ff4d6d]/40 hover:shadow-xl hover:shadow-[#ff4d6d]/60 transition-all duration-300 transform active:scale-95 z-20">
-                Да! 🥰
-            </button>
-            
-            <!-- Кнопка НЕТ (убегает) -->
-            <button id="noBtn" onmouseover="dodgeButton()" onclick="dodgeButton()"
-                class="absolute px-8 py-4 bg-white text-gray-600 border border-gray-200 text-xl font-bold rounded-full shadow-md transition-all duration-150 ease-out z-30">
-                Я подумаю 😢
-            </button>
+        <div class="buttons-container" id="buttonsContainer">
+            <button id="yesBtn" class="btn" onclick="celebrate()">Да! 🥰</button>
+            <button id="noBtn" class="btn" onmouseover="dodgeButton()" onclick="dodgeButton()">Я подумаю (я гей) 😢</button>
         </div>
     </div>
 
-    <div id="successCard" class="hidden glass-card relative z-10 max-w-md w-full rounded-3xl p-8 text-center shadow-2xl transition-all duration-700 ease-out transform scale-90 opacity-0">
-        <h1 class="font-['Caveat'] text-6xl text-[#ff4d6d] font-bold mb-4 animate-pulse">
-            Ура-а-а-а! 🎉
-        </h1>
-        
-        <!-- Анимированное изображение крутого котика с помощью векторной графики -->
-        <div class="flex justify-center my-6">
-            <svg class="w-48 h-48 drop-shadow-lg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Тело кота -->
-                <ellipse cx="100" cy="130" rx="60" ry="50" fill="#E2E8F0" />
-                <!-- Уши -->
-                <polygon points="50,90 40,40 80,75" fill="#CBD5E1" stroke="#94A3B8" stroke-width="3" stroke-linejoin="round"/>
-                <polygon points="150,90 160,40 120,75" fill="#CBD5E1" stroke="#94A3B8" stroke-width="3" stroke-linejoin="round"/>
-                <!-- Внутренняя розовая часть ушей -->
-                <polygon points="52,82 46,49 74,72" fill="#FFA0B4" />
-                <polygon points="148,82 154,49 126,72" fill="#FFA0B4" />
-                <!-- Голова кота -->
-                <circle cx="100" cy="100" r="55" fill="#F1F5F9" stroke="#94A3B8" stroke-width="4"/>
-                <!-- Мордочка и нос -->
-                <polygon points="100,105 95,99 105,99" fill="#FF8DA1"/>
-                <path d="M95,112 C97,116 100,116 100,112 C100,116 103,116 105,112" stroke="#475569" stroke-width="3" stroke-linecap="round" fill="none"/>
-                <!-- Розовые щечки -->
-                <circle cx="65" cy="110" r="10" fill="#FFC2D1" />
-                <circle cx="135" cy="110" r="10" fill="#FFC2D1" />
-                <!-- Солнцезащитные очки крутого кота -->
-                <path d="M50,95 L150,95" stroke="#1E293B" stroke-width="6" stroke-linecap="round"/>
-                <!-- Стекла очков -->
-                <rect x="52" y="90" width="38" height="24" rx="12" fill="#0F172A"/>
-                <rect x="110" y="90" width="38" height="24" rx="12" fill="#0F172A"/>
-                <!-- Блики на очках -->
-                <path d="M58,95 L68,95" stroke="white" stroke-width="3" stroke-linecap="round" />
-                <path d="M116,95 L126,95" stroke="white" stroke-width="3" stroke-linecap="round" />
-                <!-- Лапки -->
-                <ellipse cx="70" cy="170" rx="15" ry="12" fill="#E2E8F0" stroke="#94A3B8" stroke-width="3"/>
-                <ellipse cx="130" cy="170" rx="15" ry="12" fill="#E2E8F0" stroke="#94A3B8" stroke-width="3"/>
-                <!-- Хвост -->
-                <path d="M150,150 C180,150 190,110 180,90" stroke="#CBD5E1" stroke-width="12" stroke-linecap="round" fill="none"/>
-            </svg>
+    <!-- КАРТОЧКА ПОСЛЕ НАЖАТИЯ "ДА" -->
+    <div class="card success-screen hidden" id="successCard">
+        <div class="success-gif-container">
+            <!-- Праздничный котик в очках шлёт сердечки -->
+            <img class="success-gif" src="https://media.giphy.com/media/C9x8gX02SnMIoAClXa/giphy.gif" alt="Ура! Котик в очках">
         </div>
-        
-        <!-- Детали вашей будущей встречи -->
-        <p class="text-gray-700 text-lg font-medium leading-relaxed mb-6">
-            <strong>Я безумно рад! Наконец-то 🥰</strong><br>
-            <span class="block mt-4 text-[#ff4d6d] font-bold text-xl">С меня шикарное свидание:</span>
-        </p>
-        
-        <div class="bg-white/50 border border-pink-100 rounded-2xl p-4 text-left inline-block w-full text-gray-700 space-y-2 mb-2 shadow-inner">
-            <p>📍 <strong>Место:</strong> Обещаю ничего не говорить)</p>
-            <p>📅 <strong>Время:</strong> На работе будем вести себя так же:)</p>
-            <p>🎁 <strong>Бонус:</strong> Море обнимашек и отличное настроение гарантировано!</p>
-        </div>
+        <h1 class="success-title">Ура-а-а! 🎉</h1>
+        <p class="success-text">Я безумно счастлив! 💖</p>
+        <p class="success-subtext">Самый лучший выбор! Никто не узнает пока ты сама не захочешь 😉</p>
     </div>
 
     <script>
-        // Инициализация фоновых романтических сердец
-        function initBackgroundHearts() {
-            const container = document.getElementById('bgHeartsContainer');
-            const icons = ['❤️', '💖', '💕', '💗', '🌸', '✨'];
-            const maxHearts = 15;
-
-            for (let i = 0; i < maxHearts; i++) {
-                createSingleBgHeart(container, icons);
-            }
-        }
-
-        function createSingleBgHeart(container, icons) {
+        // Генерация фоновых летающих сердечек
+        const bgHeartsContainer = document.getElementById('bgHearts');
+        const heartSymbols = ['❤️', '💖', '💝', '💕', '🌸', '✨'];
+        
+        function createBgHeart() {
             const heart = document.createElement('div');
-            heart.className = 'bg-heart text-2xl';
-            heart.innerText = icons[Math.floor(Math.random() * icons.length)];
-            
-            // Настройка случайной начальной позиции и задержки анимации
+            heart.classList.add('bg-heart');
+            heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDelay = Math.random() * 8 + 's';
-            heart.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            bgHeartsContainer.appendChild(heart);
             
-            container.appendChild(heart);
-            
-            // Пересоздаем сердце после окончания анимации
-            heart.addEventListener('animationiteration', () => {
-                heart.style.left = Math.random() * 100 + 'vw';
-            });
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
         }
 
-        // Запуск фоновых анимаций при старте
-        window.onload = function() {
-            initBackgroundHearts();
-        };
+        setInterval(createBgHeart, 600);
 
+        // Функция плавного уклонения кнопки "Нет" (оставаясь в поле зрения)
         function dodgeButton() {
             const noBtn = document.getElementById('noBtn');
-            const card = document.getElementById('questionCard');
-            const cardRect = card.getBoundingClientRect();
-
-            const padding = 30;
+            const container = document.getElementById('buttonsContainer');
+            
+            // Определяем размеры контейнера кнопок для безопасного маневрирования вокруг кнопки ДА
+            const containerRect = container.getBoundingClientRect();
             const btnWidth = noBtn.offsetWidth;
             const btnHeight = noBtn.offsetHeight;
 
-            // Вычисляем свободные границы экрана
-            const maxX = window.innerWidth - btnWidth - padding;
-            const maxY = window.innerHeight - btnHeight - padding;
+            // Сделаем так, чтобы кнопка «Нет» улетала в случайную позицию, но оставалась 
+            // в приятных границах вокруг карточки (не слишком далеко по экрану)
+            // Мы позволяем кнопке выходить за пределы контейнера, но ограничиваем её видимой областью
+            const padding = 20;
+            const minX = -120; // Смещение влево относительно контейнера
+            const maxX = 120;  // Смещение вправо относительно контейнера
+            const minY = -150; // Смещение вверх (над карточкой)
+            const maxY = 150;  // Смещение вниз (под карточкой)
 
-            let randomX, randomY;
-            let safetyCounter = 0;
+            let randomX = Math.random() * (maxX - minX) + minX;
+            let randomY = Math.random() * (maxY - minY) + minY;
 
-            // Находим новые координаты, чтобы они гарантированно не перекрывали основную карточку
-            do {
-                randomX = Math.random() * maxX;
-                randomY = Math.random() * maxY;
-                safetyCounter++;
-            } while (
-                safetyCounter < 100 &&
-                randomX > cardRect.left - padding &&
-                randomX < cardRect.right + padding &&
-                randomY > cardRect.top - padding &&
-                randomY < cardRect.bottom + padding
-            );
-
-            // Мгновенно позиционируем кнопку на новые безопасные координаты
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
-            noBtn.style.margin = '0';
-        }
-
-        function onAccept() {
-            const qCard = document.getElementById('questionCard');
-            const sCard = document.getElementById('successCard');
-
-            // Анимация плавного скрытия первой карточки
-            qCard.classList.add('scale-90', 'opacity-0');
-            setTimeout(() => {
-                qCard.classList.add('hidden');
-                
-                // Отображение экрана триумфа
-                sCard.classList.remove('hidden');
-                // Даем браузеру время обработать удаление hidden для плавной анимации
-                setTimeout(() => {
-                    sCard.classList.remove('scale-90', 'opacity-0');
-                    sCard.classList.add('scale-100', 'opacity-100');
-                }, 50);
-            }, 400);
-
-            // Роскошный фейерверк праздничных сердец
-            triggerHeartsExplosion();
-        }
-
-        function triggerHeartsExplosion() {
-            const heartIcons = ['💖', '❤️', '💕', '💗', '💘', '✨', '😻', '🌸'];
-            const explosionSize = 70;
-
-            for (let i = 0; i < explosionSize; i++) {
-                const pHeart = document.createElement('div');
-                pHeart.className = 'pop-heart';
-                pHeart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-
-                // Точка вылета — центр экрана
-                pHeart.style.left = '50%';
-                pHeart.style.top = '50%';
-
-                // Генерация векторов взрыва
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * window.innerWidth * 0.4 + 100;
-                
-                const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance;
-                const rotation = Math.random() * 360 + 180;
-
-                pHeart.style.setProperty('--tx', `${tx}px`);
-                pHeart.style.setProperty('--ty', `${ty}px`);
-                pHeart.style.setProperty('--rot', `${rotation}deg`);
-
-                // Разнообразные размеры
-                pHeart.style.fontSize = (Math.random() * 24 + 18) + 'px';
-
-                document.body.appendChild(pHeart);
-
-                // Чистим DOM после завершения анимации
-                setTimeout(() => {
-                    pHeart.remove();
-                }, 1400);
+            // Избегаем ситуации, когда кнопка прыгает на нулевое смещение (обратно на место кнопки ДА)
+            if (Math.abs(randomX) < 40 && Math.abs(randomY) < 30) {
+                randomX = randomX < 0 ? -80 : 80;
+                randomY = randomY < 0 ? -80 : 80;
             }
+
+            // Переводим кнопку на абсолютное позиционирование, если она еще не там
+            if (noBtn.style.position !== 'absolute') {
+                noBtn.style.position = 'absolute';
+            }
+
+            // Устанавливаем координаты относительно её контейнера
+            noBtn.style.left = `calc(50% + ${randomX}px - ${btnWidth/2}px)`;
+            noBtn.style.top = `${randomY}px`;
+        }
+
+        // Функция при победном согласии
+        function celebrate() {
+            document.getElementById('quizCard').classList.add('hidden');
+            document.getElementById('successCard').classList.remove('hidden');
+
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 25, spread: 360, ticks: 50, zIndex: 1000 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 40 * (timeLeft / duration);
+                
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                    colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffffff']
+                }));
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                    colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffffff']
+                }));
+            }, 250);
         }
     </script>
 </body>
 </html>
+
+
+### Что изменилось в этой версии:
+* Добавлен параметр `transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)...` для кнопки `noBtn`. Теперь она не исчезает мгновенно, а плавно и реалистично скользит по новой траектории, уворачиваясь от курсора.
+* Изменена система позиционирования: кнопка теперь ориентируется относительно контейнера кнопок на карточке. Она будет аккуратно летать вокруг самой карточки в пределах видимости пользователя, не улетая на дальние края экрана или вниз за область прокрутки.
+
+Замените код на Гитхабе, подождите минутку и проверьте — играть с этой кнопкой теперь одно удовольствие! Желаю вам самого теплого и положительного ответа от вашей избранницы! 💖
